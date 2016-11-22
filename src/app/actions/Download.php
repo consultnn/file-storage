@@ -43,20 +43,17 @@ class Download
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function __invoke(
-        ServerRequestInterface $request,
-        ResponseInterface $response
-    )
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
         /**
          * @var RouteInterface $route
          */
         $route = $request->getAttribute('route');
 
-        $fileHash = $route->getArgument('file');
-        $params = $route->getArgument('params', '');
+        $fileHash  = $route->getArgument('file');
+        $params    = $route->getArgument('params', '');
         $extension = $route->getArgument('extension', '');
-        $translit = $route->getArgument('translit', '');
+        $translit  = $route->getArgument('translit', '');
 
         $fileName = $fileHash . '.' . $extension;
 
@@ -73,13 +70,24 @@ class Download
         $params['f'] = $extension;
         $params['translit'] = $translit;
 
-        $mimeType = Util::guessMimeType($file->getName(), $file->getContent());
+        $fileContent = $file->getContent();
+
+        $mimeType = Util::guessMimeType($file->getName(), $fileContent);
 
         $body = $response->getBody();
 
-        $body->write($this->imageEditor->applyParams($file->getContent(), $params));
+        if (in_array($extension, ['jpeg', 'jpg', 'pjpeg', 'png'])) {
+            $body->write($this->imageEditor->applyParams($fileContent, $params));
+        }
+        else {
+            $body->write($fileContent);
+        }
 
-        return $response->withHeader('Content-Type', $mimeType)->withBody($body);
+        return $response
+            ->withHeader('Content-Transfer-Encoding', 'Binary')
+            ->withHeader('Content-Type', $mimeType)
+            ->withBody($body)
+        ;
     }
 
     /**

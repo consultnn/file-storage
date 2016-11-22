@@ -26,21 +26,14 @@ class ImagineEditor implements ImageEditorInterface
      */
     public function applyParams(string $fileContent, array $params = [])
     {
-        $path = tempnam(sys_get_temp_dir(), 'image');
-
-        file_put_contents($path, $fileContent);
-
-        $imagine = new Imagine;
+        $image = (new Imagine)->load($fileContent);
         $transformation = new Transformation();
-        $image = $imagine->open($path);
         $options = [];
         $thumbnailMode = ImageInterface::THUMBNAIL_INSET;
 
         if (array_key_exists('zc', $params)) {
             $thumbnailMode = ImageInterface::THUMBNAIL_OUTBOUND;
         }
-
-        $format = FileName::getExtension($path);
 
         // Thumbnail
         if (array_key_exists('w', $params) || array_key_exists('h', $params)) {
@@ -49,19 +42,19 @@ class ImagineEditor implements ImageEditorInterface
                 (int) ($params['h'] ?? $params['w'])
             );
 
-            $transformation->thumbnail($box, $thumbnailMode);
+            $transformation->resize($box, $thumbnailMode);
         }
 
         $quality = $params['q'] ?? self::DEFAULT_QUALITY;
 
-        $options = array_merge($options, $this->getQualityOptions($format, $quality));
+        $options = array_merge($options, $this->getQualityOptions($params['f'], $quality));
 
         /**
          * @var ImageInterface $imagine
          */
         $imagine = $transformation->apply($image);
 
-        return $imagine->show($format, $options);
+        return $imagine->show($params['f'], $options);
     }
 
     /**
