@@ -42,7 +42,7 @@ class ImagineEditor implements ImageEditorInterface
                 (int) ($params['h'] ?? $params['w'])
             );
 
-            $transformation->resize($box, $thumbnailMode);
+            $transformation->thumbnail($box, $thumbnailMode);
         }
 
         $quality = $params['q'] ?? self::DEFAULT_QUALITY;
