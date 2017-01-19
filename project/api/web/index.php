@@ -2,21 +2,12 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../../vendor/autoload.php';
+require(__DIR__ . '/../../vendor/autoload.php');
 
-$settings = array_merge(
-    require __DIR__ . '/../config/settings.php', // Slim configuration
-    require __DIR__ . '/../config/dependencies.php' // DIC configuration
-);
+$config = require(__DIR__ . '/../config/main.php');
 
 // Instantiate the app
-$app = new \app\App($settings);
-
-// Register middleware
-require __DIR__ . '/../config/middleware.php';
-
-// Register routes
-//require __DIR__ . '/../config/routes.php';
+$application = new \app\Application($config);
 
 // Run app
-$app->run();
+$application->run();
