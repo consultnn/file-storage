@@ -12,6 +12,7 @@ services:
     depends_on:
     - php
     restart: always
+
   php:
     extends:
       file: common-compose.yml

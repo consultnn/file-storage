@@ -78,8 +78,7 @@ class Download
 
         if (in_array($extension, ['jpeg', 'jpg', 'pjpeg', 'png'])) {
             $body->write($this->imageEditor->applyParams($fileContent, $params));
-        }
-        else {
+        } else {
             $body->write($fileContent);
         }
 

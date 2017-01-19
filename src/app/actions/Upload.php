@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace app\actions;
 
-use app\components\project\Project;
 use app\components\storage\Storage;
 use Interop\Container\ContainerInterface;
 use Slim\Http\Request;

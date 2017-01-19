@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace app\components\project;
 
+use app\exceptions\BadRequestHttpException;
+use Interop\Container\ContainerInterface;
+
 /**
  * Class Project
  * @package app\components
  */
-class Project {
-
+class Project
+{
     /**
      * @var string
      */
@@ -25,16 +28,17 @@ class Project {
      */
     private $downloadToken;
 
+    public function __construct(ContainerInterface $container)
+    {
+
+    }
+
     /**
      * @param string $name
      * @param $uploadToken
      * @param $downloadToken
      */
-    public function configure(
-        string $name,
-        string $uploadToken,
-        string $downloadToken
-    )
+    public function configure(string $name, string $uploadToken, string $downloadToken)
     {
         $this->name = $name;
         $this->uploadToken = $uploadToken;

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use app\actions\Download;
-use app\actions\Upload;
 use app\components\storage\image\ImagineEditor;
 use app\components\storage\Storage;
 use Interop\Container\ContainerInterface;
@@ -32,8 +30,5 @@ return array(
     },
     'imageEditor' => function () {
         return new ImagineEditor();
-    },
-    'project' => function () {
-        return new \app\components\project\Project();
     }
 );

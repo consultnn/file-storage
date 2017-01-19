@@ -1,0 +1,19 @@
+{
+    "name": "consultnn/file-storage",
+    "description": "Simple file storage",
+    "license": "MIT",
+    "require": {
+        "php": "~7.1.0",
+        "monolog/monolog": "^1.17",
+        "league/flysystem": "^1.0",
+        "imagine/imagine": "~0.6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=4.8 < 6.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}
