@@ -11,4 +11,5 @@ services:
       file: common-compose.yml
       service: php
     volumes:
-    - ./docker/php/dev/php.ini:/usr/local/etc/php/php.ini
+    - ./docker/php/dev/php.ini:/usr/local/etc/php/php.ini:ro
+    - ./docker/php/dev/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
