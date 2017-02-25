@@ -16,6 +16,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 $settings = array_merge(
     require __DIR__ . '/../config/settings.php', // Slim configuration
+    require __DIR__ . '/../config/settings-local.php', // Slim env configuration
     require __DIR__ . '/../config/dependencies.php' // DIC configuration
 );
 

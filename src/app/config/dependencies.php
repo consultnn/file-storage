@@ -11,11 +11,10 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Processor\UidProcessor;
 use Slim\Handlers\Strategies\RequestResponseArgs;
 
-return array(
+return [
     'foundHandler' => function () {
         return new RequestResponseArgs();
     },
-    // monolog
     'logger' => function (ContainerInterface $container) {
         $settings = $container->get('settings')['logger'];
         $logger = new Monolog\Logger($settings['name']);
@@ -36,4 +35,4 @@ return array(
     'project' => function () {
         return new \app\components\project\Project();
     }
-);
+];
