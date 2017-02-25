@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace app\middleware;
 
-use Interop\Container\ContainerInterface;
+use app\components\project\Project;
+use app\exceptions\TokenNotSetException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Exception\ContainerValueNotFoundException;
 
+/**
+ * Class UploadAuthMiddleware
+ * @package app\middleware
+ */
 class UploadAuthMiddleware
 {
     /**
@@ -16,33 +20,45 @@ class UploadAuthMiddleware
      */
     private $project;
 
-    public function __construct(ContainerInterface $container)
+    /**
+     * UploadAuthMiddleware constructor.
+     * @param Project $project
+     */
+    public function __construct(Project $project)
     {
-        $this->project = $container->get('project');
+        $this->project = $project;
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
-        /**
-         * @var \Slim\Route $route
-         */
-        $route = $request->getAttribute('route');
-
-        $uploadToken = $route->getArgument('token');
-
         try {
-            if (!$this->authenticate($uploadToken)) {
-                return $response->withStatus(401);
+            $token = $this->getToken($request);
+
+            if ($this->project->isValidUploadToken($token) === false) {
+                return $response->withStatus(401, 'Wrong token');
             }
-        } catch (ContainerValueNotFoundException $e) {
-            return $response->withStatus(401);
+        } catch (TokenNotSetException $exception) {
+            return $response->withStatus(400, $exception->getMessage());
         }
 
         return $next($request, $response);
     }
 
-    private function authenticate($token)
+    /**
+     * @param ServerRequestInterface $request
+     * @return bool|string
+     * @throws \app\exceptions\ProjectNotSetException
+     */
+    private function getToken(ServerRequestInterface $request)
     {
-        return $this->project->isValidUploadToken($token);
+        $queryParams = $request->getQueryParams();
+
+        $token = $queryParams['token'] ?? null;
+
+        if (!$token) {
+            $token = $request->getHeaderLine('X-Token') ?? null;
+        }
+
+        return $token;
     }
 }

@@ -77,7 +77,7 @@ class ProjectMiddleware
         $projectName = $queryParams['project'] ?? null;
 
         if (!$projectName) {
-            $projectName = $request->getHeader('X-Project');
+            $projectName = $request->getHeaderLine('X-Project') ?? null;
         }
 
         return $projectName;

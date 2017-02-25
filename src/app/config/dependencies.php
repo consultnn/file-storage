@@ -41,6 +41,14 @@ return [
     UploadAuthMiddleware::class => function(){
         return new UploadAuthMiddleware();
     },
+    UploadAuthMiddleware::class => function(ContainerInterface $container){
+        /**
+         * @var ProjectList $projectList
+         */
+        $projectList = $container->get(ProjectList::class);
+
+        return new UploadAuthMiddleware($projectList->getActiveProject());
+    },
     ProjectMiddleware::class => function(ContainerInterface $container){
         return new ProjectMiddleware(
             $container->get(ProjectList::class)
