@@ -26,7 +26,7 @@ return [
             'level' => \Monolog\Logger::DEBUG,
         ],
         'storage' => [
-            'directory' => '/storage',
+            'directory' => '/var/www/storage',
         ]
     ],
 ];
