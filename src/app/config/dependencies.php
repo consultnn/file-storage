@@ -6,6 +6,7 @@ use app\actions\UploadAction;
 use app\components\project\ProjectList;
 use app\components\storage\image\ImagineEditor;
 use app\components\storage\Storage;
+use app\middleware\DownloadAuthMiddleware;
 use app\middleware\ProjectMiddleware;
 use app\middleware\UploadAuthMiddleware;
 use Interop\Container\ContainerInterface;
@@ -50,8 +51,13 @@ return [
     },
 
     // Middleware
-    UploadAuthMiddleware::class => function(){
-        return new UploadAuthMiddleware();
+    DownloadAuthMiddleware::class => function(ContainerInterface $container){
+        /**
+         * @var ProjectList $projectList
+         */
+        $projectList = $container->get(ProjectList::class);
+
+        return new DownloadAuthMiddleware($projectList->getActiveProject());
     },
     UploadAuthMiddleware::class => function(ContainerInterface $container){
         /**
