@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use app\actions\Download;
-use app\actions\Upload;
+use app\actions\UploadAction;
 use app\middleware\DownloadAuth;
 use app\middleware\UploadAuthMiddleware;
 
 $container = $app->getContainer();
 
-$app->post('/upload', Upload::class )->add(UploadAuthMiddleware::class);
+$app->post('/upload', UploadAction::class )->add(UploadAuthMiddleware::class);
 
 //$app->group('/{file:\w+}_{hash:\w{1,7}}', function () {
 //    /**

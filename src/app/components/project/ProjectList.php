@@ -31,7 +31,8 @@ class ProjectList
             $projectInstance = new Project(
                 $projectName,
                 $projectData['uploadToken'],
-                $projectData['downloadToken']
+                $projectData['downloadToken'],
+                $projectData['storage']
             );
 
             $this->add($projectInstance);

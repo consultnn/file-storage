@@ -12,12 +12,12 @@ return [
             'level' => \Monolog\Logger::DEBUG,
         ],
         'storage' => [
-            'directory' => '/var/www/storage',
+            'directory' => '/var/www/app/storage',
         ],
         'projects' => [
             'example' => [
                 'storage' => [
-                    'path' => 'example'
+                    'prefix' => 'example'
                 ],
                 'uploadToken' => 'N3edBMSnQrakH9nBK98Gmmrz367JxWCT',
                 'downloadToken' => 'pzScy2w6Kuhz2djvMUg6TeNpBmt9rFvW',

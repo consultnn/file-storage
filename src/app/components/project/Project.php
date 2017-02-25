@@ -26,15 +26,22 @@ class Project {
     private $downloadToken;
 
     /**
-     * @param string $name
-     * @param $uploadToken
-     * @param $downloadToken
+     * @var array
      */
-    public function __construct(string $name, string $uploadToken, string $downloadToken)
+    private $storage;
+
+    /**
+     * @param string $name
+     * @param string $uploadToken
+     * @param string $downloadToken
+     * @param array $storage
+     */
+    public function __construct(string $name, string $uploadToken, string $downloadToken, array $storage)
     {
         $this->name = $name;
         $this->uploadToken = $uploadToken;
         $this->downloadToken = $downloadToken;
+        $this->storage = $storage;
     }
 
     /**
@@ -69,5 +76,13 @@ class Project {
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStorage(): array
+    {
+        return $this->storage;
     }
 }

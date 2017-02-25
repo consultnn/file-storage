@@ -15,22 +15,12 @@ class Storage
     /** @var  \League\Flysystem\Filesystem */
     private $filesystem;
 
-    private $config;
-
     /**
      * @param array $config
      */
     public function __construct(array $config)
     {
-        $this->config = $config;
-    }
-
-    /**
-     * @param array $config
-     */
-    public function configure(array $config)
-    {
-        $path = rtrim($this->config['directory'], '/') . DIRECTORY_SEPARATOR . ltrim($config['path'], '/');
+        $path = rtrim($config['directory'], '/') . DIRECTORY_SEPARATOR . ltrim($config['prefix'], '/');
         if (!is_dir($path)) {
             mkdir($path);
         }
@@ -51,6 +41,7 @@ class Storage
     /**
      * @param $fileName
      * @return File
+     * @throws \app\components\storage\FileException
      */
     public function getFileByName($fileName)
     {

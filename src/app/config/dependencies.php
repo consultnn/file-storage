@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use app\actions\UploadAction;
 use app\components\project\ProjectList;
 use app\components\storage\image\ImagineEditor;
 use app\components\storage\Storage;
@@ -13,6 +14,7 @@ use Monolog\Processor\UidProcessor;
 use Slim\Handlers\Strategies\RequestResponseArgs;
 
 return [
+    // Other
     'foundHandler' => function () {
         return new RequestResponseArgs();
     },
@@ -24,20 +26,30 @@ return [
 
         return $logger;
     },
-    'storage' => function (ContainerInterface $container) {
-        /** @var \Slim\Collection $settings */
-        $settings = $container->get('settings');
-
-        return new Storage($settings->get('storage'));
-    },
     'imageEditor' => function () {
         return new ImagineEditor();
+    },
+    Storage::class => function (ContainerInterface $container) {
+        /**
+         * @var \Slim\Collection $settings
+         * @var ProjectList $projectList
+         */
+        $settings = $container->get('settings');
+        $projectList = $container->get(ProjectList::class);
+
+        $storage = $settings->get('storage');
+
+        $storage = array_merge_recursive($storage, $projectList->getActiveProject()->getStorage());
+
+        return new Storage($storage);
     },
     ProjectList::class => function (ContainerInterface $container) {
         $settings = $container->get('settings');
 
         return new ProjectList($settings['projects']);
     },
+
+    // Middleware
     UploadAuthMiddleware::class => function(){
         return new UploadAuthMiddleware();
     },
@@ -53,6 +65,13 @@ return [
         return new ProjectMiddleware(
             $container->get(ProjectList::class)
 
+        );
+    },
+
+    // Actions
+    UploadAction::class => function(ContainerInterface $container){
+        return new UploadAction(
+            $container->get(Storage::class)
         );
     }
 ];
