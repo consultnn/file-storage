@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace app\middleware;
 
 use app\components\project\Project;
-use app\components\storage\FileName;
+use League\Glide\Signatures\SignatureException;
+use League\Glide\Signatures\SignatureFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class DownloadAuthMiddleware
@@ -39,38 +39,15 @@ class DownloadAuthMiddleware
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
-        list($hash, $fileName, $params) = $this->getParams($request);
+        try {
+            SignatureFactory::create($this->project->getDownloadSignKey())->validateRequest(
+                (string) $request->getUri()->getPath(), $request->getQueryParams()
+            );
 
-        if (!$this->authenticate($hash, $fileName, $params)) {
-            return $response->withStatus(401);
+        } catch (SignatureException $e) {
+            return $response->withStatus(401, 'Wrong token');
         }
 
         return $next($request, $response);
-    }
-
-    private function authenticate(string $hash, string $fileName, $params = '')
-    {
-        $downloadToken = $this->project->getDownloadToken();
-
-        $newHash = FileName::internalHash($fileName, $params, $downloadToken);
-
-        return $newHash === $hash;
-    }
-
-    private function getParams(ServerRequestInterface $request)
-    {
-        /**
-         * @var \Slim\Route $route
-         */
-        $route = $request->getAttribute('route');
-
-        $hash = $route->getArgument('hash');
-        $file = $route->getArgument('file');
-        $params = $route->getArgument('params', '');
-        $extension = $route->getArgument('extension', '');
-
-        $fileName = $file . '.' . $extension;
-
-        return [$hash, $fileName, $params];
     }
 }

@@ -12,20 +12,15 @@ use League\Flysystem\Filesystem;
  */
 class Storage
 {
-    /** @var  \League\Flysystem\Filesystem */
+    /** @var  Filesystem */
     private $filesystem;
 
     /**
-     * @param array $config
+     * @param Filesystem $filesystem
      */
-    public function __construct(array $config)
+    public function __construct(Filesystem $filesystem)
     {
-        $path = rtrim($config['directory'], '/') . DIRECTORY_SEPARATOR . ltrim($config['prefix'], '/');
-        if (!is_dir($path)) {
-            mkdir($path);
-        }
-        $adapter = new Local($path);
-        $this->filesystem = new Filesystem($adapter);
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -33,7 +28,7 @@ class Storage
      * @return File
      * @throws FileException
      */
-    public function save($uploadFilePath)
+    public function save($uploadFilePath): File
     {
         return (new File($this->filesystem))->upload($uploadFilePath);
     }
@@ -43,8 +38,13 @@ class Storage
      * @return File
      * @throws \app\components\storage\FileException
      */
-    public function getFileByName($fileName)
+    public function getFileByName($fileName): File
     {
         return (new File($this->filesystem))->load($fileName);
+    }
+
+    public function getFilesystem(): Filesystem
+    {
+        return $this->filesystem;
     }
 }

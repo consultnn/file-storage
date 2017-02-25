@@ -23,7 +23,7 @@ class Project {
     /**
      * @var string
      */
-    private $downloadToken;
+    private $downloadSignKey;
 
     /**
      * @var array
@@ -33,14 +33,14 @@ class Project {
     /**
      * @param string $name
      * @param string $uploadToken
-     * @param string $downloadToken
+     * @param string $downloadSignKey
      * @param array $storage
      */
-    public function __construct(string $name, string $uploadToken, string $downloadToken, array $storage)
+    public function __construct(string $name, string $uploadToken, string $downloadSignKey, array $storage)
     {
         $this->name = $name;
         $this->uploadToken = $uploadToken;
-        $this->downloadToken = $downloadToken;
+        $this->downloadSignKey = $downloadSignKey;
         $this->storage = $storage;
     }
 
@@ -59,15 +59,15 @@ class Project {
      */
     public function isValidDownloadToken(string $token): bool
     {
-        return $token === $this->downloadToken;
+        return $token === $this->downloadSignKey;
     }
 
     /**
      * @return string
      */
-    public function getDownloadToken(): string
+    public function getDownloadSignKey(): string
     {
-        return $this->downloadToken;
+        return $this->downloadSignKey;
     }
 
     /**

@@ -26,11 +26,17 @@ class File
     private $filesystem;
 
     /**
+     * @var FileNameMaker
+     */
+    private $fileNameMaker;
+
+    /**
      * @param Filesystem $filesystem
      */
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
+        $this->fileNameMaker = new FileNameMaker();
     }
 
     /**
@@ -64,7 +70,7 @@ class File
             throw new FileException('file does not exists');
         }
 
-        $newName = FileName::get($fileName);
+        $newName = $this->fileNameMaker->makeName($fileName);
         $this->name = $newName;
 
         try {

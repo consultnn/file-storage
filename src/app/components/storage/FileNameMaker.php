@@ -8,11 +8,10 @@ use League\Flysystem\Util;
 use League\Flysystem\Util\MimeType;
 
 /**
- * Class Uploader
- * @internal
+ * Class FileNameMaker
  * @package app\components\storage
  */
-class FileName
+class FileNameMaker
 {
     /**
      * File extensions map for browsers
@@ -23,59 +22,25 @@ class FileName
     ];
 
     /**
-     * TODO
-     * Make secure hash based on file path, params and download token
-     *
-     * @param string $filePath
-     * @param array $params
-     * @param string $downloadToken
-     * @return string
-     */
-    public static function internalHash($filePath, $params, $downloadToken)
-    {
-        $hash = hash('crc32', $downloadToken . $filePath . $params . $downloadToken);
-
-        $hash = self::baseConvert($hash, 16, 36);
-
-        return str_pad($hash, 5, '0', STR_PAD_LEFT);
-    }
-
-    /**
      * Generate filename for upload
      * @param string $file
      * @param int $length
      * @return string
      */
-    public static function get($file, $length = 13)
+    public function makeName($file, $length = 13)
     {
         $sha = sha1_file($file);
-        $hash = self::baseConvert($sha, 16, 36);
 
-        $name = substr($hash, 0, $length);
+        $name = substr($sha, 0, $length);
 
-        if (strlen($name) < $length) {
-            $name = str_pad($name, $length, '0', STR_PAD_LEFT);
-        }
-
-        if ($extension = self::getExtension($file)) {
+        if ($extension = $this->getExtension($file)) {
             $name = $name . '.' . $extension;
         }
 
         return $name;
     }
 
-    /**
-     * @param string $number
-     * @param int $fromBase
-     * @param int $toBase
-     * @return string
-     */
-    private static function baseConvert($number, $fromBase, $toBase)
-    {
-        return gmp_strval(gmp_init($number, $fromBase), $toBase);
-    }
-
-    public static function getExtension($file)
+    public function getExtension($file)
     {
         static $mimeTypeToExtensionMap;
 

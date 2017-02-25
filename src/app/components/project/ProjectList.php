@@ -31,7 +31,7 @@ class ProjectList
             $projectInstance = new Project(
                 $projectName,
                 $projectData['uploadToken'],
-                $projectData['downloadToken'],
+                $projectData['downloadSignKey'],
                 $projectData['storage']
             );
 
