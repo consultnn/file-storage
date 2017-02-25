@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-use app\actions\Download;
-use app\actions\Upload;
+use app\components\project\ProjectList;
 use app\components\storage\image\ImagineEditor;
 use app\components\storage\Storage;
+use app\middleware\ProjectMiddleware;
+use app\middleware\UploadAuthMiddleware;
 use Interop\Container\ContainerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\UidProcessor;
@@ -32,7 +33,18 @@ return [
     'imageEditor' => function () {
         return new ImagineEditor();
     },
-    'project' => function () {
-        return new \app\components\project\Project();
+    ProjectList::class => function (ContainerInterface $container) {
+        $settings = $container->get('settings');
+
+        return new ProjectList($settings['projects']);
+    },
+    UploadAuthMiddleware::class => function(){
+        return new UploadAuthMiddleware();
+    },
+    ProjectMiddleware::class => function(ContainerInterface $container){
+        return new ProjectMiddleware(
+            $container->get(ProjectList::class)
+
+        );
     }
 ];

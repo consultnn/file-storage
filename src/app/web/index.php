@@ -14,14 +14,14 @@ if (PHP_SAPI === 'cli-server') {
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$settings = array_merge(
+$config = array_merge_recursive(
     require __DIR__ . '/../config/settings.php', // Slim configuration
     require __DIR__ . '/../config/settings-local.php', // Slim env configuration
     require __DIR__ . '/../config/dependencies.php' // DIC configuration
 );
 
 // Instantiate the app
-$app = new \Slim\App($settings);
+$app = new \Slim\App($config);
 
 // Register middleware
 require __DIR__ . '/../config/middleware.php';

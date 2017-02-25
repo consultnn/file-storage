@@ -7,9 +7,16 @@ namespace app\exceptions;
 use RuntimeException;
 
 /**
- * Not Found Exception
+ * Class ProjectNotSetException
+ * @package app\exceptions
  */
 class ProjectNotSetException extends RuntimeException
 {
-
+    /**
+     * ProjectNotSetException constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct('Project not set');
+    }
 }

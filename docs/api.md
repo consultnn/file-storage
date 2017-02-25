@@ -2,9 +2,13 @@ API
 ===
 
 ###Upload request
-`POST /upload/<projectName>/<uploadToken>` - upload files
+`POST /upload` - upload files
+
+Also you need set some headers:
+`X-Project - name project for what you upload file`
+`X-Access-Token - security token`
+
 You can send files on this url from form use `<input type="file">`.
-Also you can use `<input type="text" name="urls[]">` for send on service url of file what you need upload.
 
 ###Download requests
 For next requests you need use [consultnn/file-storage-client](https://github.com/consultnn/file-storage-client) project. 

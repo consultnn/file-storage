@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\ContainerValueNotFoundException;
 
-class UploadAuth
+class UploadAuthMiddleware
 {
     /**
      * @var \app\components\project\Project
@@ -43,6 +43,6 @@ class UploadAuth
 
     private function authenticate($token)
     {
-        return $this->project->availableUploadToken($token);
+        return $this->project->isValidUploadToken($token);
     }
 }

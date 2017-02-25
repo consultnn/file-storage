@@ -30,11 +30,7 @@ class Project {
      * @param $uploadToken
      * @param $downloadToken
      */
-    public function configure(
-        string $name,
-        string $uploadToken,
-        string $downloadToken
-    )
+    public function __construct(string $name, string $uploadToken, string $downloadToken)
     {
         $this->name = $name;
         $this->uploadToken = $uploadToken;
@@ -45,7 +41,7 @@ class Project {
      * @param string $token
      * @return bool
      */
-    public function availableUploadToken(string $token)
+    public function isValidUploadToken(string $token): bool
     {
         return $token === $this->uploadToken;
     }
@@ -54,7 +50,7 @@ class Project {
      * @param string $token
      * @return bool
      */
-    public function availableDownloadToken(string $token)
+    public function isValidDownloadToken(string $token): bool
     {
         return $token === $this->downloadToken;
     }
@@ -62,8 +58,16 @@ class Project {
     /**
      * @return string
      */
-    public function getDownloadToken()
+    public function getDownloadToken(): string
     {
         return $this->downloadToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-// Application middleware
+use app\middleware\ProjectMiddleware;
 
-$app->add(new \app\middleware\Project($app->getContainer()));
+$app->add(ProjectMiddleware::class);

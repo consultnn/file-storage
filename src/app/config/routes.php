@@ -5,12 +5,11 @@ declare(strict_types=1);
 use app\actions\Download;
 use app\actions\Upload;
 use app\middleware\DownloadAuth;
-use app\middleware\UploadAuth;
+use app\middleware\UploadAuthMiddleware;
 
 $container = $app->getContainer();
 
-$app->post('/upload/{project}/{token}', Upload::class)
-    ->add(new UploadAuth($container));
+$app->post('/upload', Upload::class )->add(new UploadAuthMiddleware($container));
 
 $app->group('/{file:\w+}_{hash:\w{1,7}}', function () {
     /**
