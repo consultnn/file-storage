@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 {
-    source common.sh # For IDE
-    . "${BASH_SOURCE%/*}/common.sh"
+    source vendor/common.sh # For IDE
+    . "${BASH_SOURCE%/*}/vendor/common.sh"
 } 2>> /dev/null
 
 section "Install composer dependencies"
