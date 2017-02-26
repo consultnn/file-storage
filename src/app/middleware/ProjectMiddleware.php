@@ -57,9 +57,9 @@ class ProjectMiddleware
             $this->projectList->setActiveProject($projectInstance);
 
         } catch (ProjectNotExistsException $e) {
-            return $response->withStatus(400, $e->getMessage());
+            return $response->withStatus(500, $e->getMessage());
         } catch (ProjectNotSetException $e) {
-            return $response->withStatus(400, $e->getMessage());
+            return $response->withStatus(500, $e->getMessage());
         }
 
         return $next($request, $response);
