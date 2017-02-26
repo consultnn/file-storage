@@ -8,11 +8,13 @@ RUN echo 'http://dl-3.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositor
     libpng-dev \
     icu-dev \
     libjpeg \
+    libjpeg-turbo-dev \
     php7.1-gd
 
 RUN pecl install xdebug
 
-RUN docker-php-ext-install gd
+RUN docker-php-ext-configure gd --with-jpeg-dir \
+    && docker-php-ext-install gd
 
 RUN apk del .build-deps
 
