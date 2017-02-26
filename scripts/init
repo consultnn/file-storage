@@ -8,3 +8,5 @@
 section "Init app"
 
 docker exec ${CONTAINER_PHP} cp -R /var/www/app/env/${ENV}/. /var/www/app/
+docker exec ${CONTAINER_PHP} mkdir -p /var/www/app/web/cache
+docker exec ${CONTAINER_PHP} chmod 0777 /var/www/app/web/cache
