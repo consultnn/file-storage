@@ -40,8 +40,12 @@ class DownloadAuthMiddleware
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
         try {
+            $params = $request->getQueryParams();
+
+            unset($params['project'], $params['token']);
+
             SignatureFactory::create($this->project->getDownloadSignKey())->validateRequest(
-                (string) $request->getUri()->getPath(), $request->getQueryParams()
+                (string) $request->getUri()->getPath(), $params
             );
 
         } catch (SignatureException $e) {
