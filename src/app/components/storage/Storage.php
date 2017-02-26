@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace app\components\storage;
 
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 
 /**

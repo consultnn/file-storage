@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace app\middleware;
 
-use app\components\project\Project;
 use app\components\project\ProjectList;
 use app\exceptions\ProjectNotExistsException;
 use app\exceptions\ProjectNotSetException;
@@ -26,7 +25,7 @@ class ProjectMiddleware
 
     /**
      * ProjectMiddleware constructor.
-     * @param Project $projectList
+     * @param ProjectList $projectList
      */
     public function __construct(ProjectList $projectList)
     {

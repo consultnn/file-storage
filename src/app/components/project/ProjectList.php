@@ -50,6 +50,7 @@ class ProjectList
     /**
      * @param string $projectName
      * @return Project
+     * @throws \app\exceptions\ProjectNotSetException
      */
     public function get(string $projectName): Project
     {

@@ -75,7 +75,7 @@ class File
 
         try {
             if (!$this->filesystem->has($this->getPath())) {
-                $stream = fopen($fileName, 'r+');
+                $stream = fopen($fileName, 'rb+');
                 $this->filesystem->writeStream($this->getPath(), $stream);
                 fclose($stream);
             }
