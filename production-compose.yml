@@ -12,6 +12,8 @@ services:
     depends_on:
     - php
     restart: always
+    volumes:
+    - /var/data/file-storage/cache:/var/data/cache
   php:
     extends:
       file: common-compose.yml
@@ -24,3 +26,4 @@ services:
     restart: always
     volumes:
     - ./docker/php/prod/php.ini:/usr/local/etc/php/php.ini
+    - /var/data/file-storage/storage:/var/data/storage

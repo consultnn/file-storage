@@ -12,7 +12,7 @@ return [
             'level' => \Monolog\Logger::DEBUG,
         ],
         'storage' => [
-            'directory' => '/var/www/app/storage',
+            'directory' => '/var/data/storage',
         ],
         'projects' => [
             'example' => [

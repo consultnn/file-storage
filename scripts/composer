@@ -7,8 +7,6 @@
 
 section "Install composer dependencies"
 
-docker exec ${CONTAINER_PHP} composer config -g github-oauth.github.com 2272fe6f5a939dddb1f30a5176eaee15f990836c
-
 case ${ENV} in
     ${ENV_DEV})
     docker exec ${CONTAINER_PHP} composer install
