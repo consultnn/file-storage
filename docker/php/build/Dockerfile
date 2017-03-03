@@ -8,8 +8,7 @@ RUN echo 'http://dl-3.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositor
     libpng-dev \
     icu-dev \
     libjpeg \
-    libjpeg-turbo-dev \
-    php7.1-gd
+    libjpeg-turbo-dev
 
 RUN pecl install xdebug
 
