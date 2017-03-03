@@ -22,8 +22,8 @@ Prepare app environment
 4. Run build scripts  
 
 ``` 
-./build/composer.sh 
-./build/init.sh 
+./scripts/composer.sh 
+./scripts/init.sh 
 ```  
     
 Go to
