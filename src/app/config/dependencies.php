@@ -84,7 +84,10 @@ return [
          */
         $projectList = $container->get(ProjectList::class);
 
-        return new DownloadAuthMiddleware($projectList->getActiveProject());
+        return new DownloadAuthMiddleware(
+            $projectList->getActiveProject(),
+            $container->get(LoggerInterface::class)
+        );
     },
     UploadAuthMiddleware::class => function(ContainerInterface $container){
         /**
