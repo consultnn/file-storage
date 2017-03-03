@@ -15,20 +15,13 @@ use League\Flysystem\Filesystem;
 use League\Glide\Server as GlideServer;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\UidProcessor;
+use Psr\Log\LoggerInterface;
 use Slim\Handlers\Strategies\RequestResponseArgs;
 
 return [
     // Other
     'foundHandler' => function () {
         return new RequestResponseArgs();
-    },
-    'logger' => function (ContainerInterface $container) {
-        $settings = $container->get('settings')['logger'];
-        $logger = new Monolog\Logger($settings['name']);
-        $logger->pushProcessor(new UidProcessor());
-        $logger->pushHandler(new StreamHandler($settings['path'], $settings['level']));
-
-        return $logger;
     },
     Filesystem::class => function (ContainerInterface $container){
         /**
@@ -62,6 +55,28 @@ return [
         return new ProjectList($settings['projects']);
     },
 
+    // Logging
+    'logger' => function(ContainerInterface $container) {
+        return $container->get(LoggerInterface::class);
+    },
+    LoggerInterface::class => function (ContainerInterface $container) {
+        /**
+         * @var \Slim\Collection $settings
+         */
+        $settings = $container->get('settings');
+
+        $loggerSettings = $settings->get('logger');
+
+        $logger = new Monolog\Logger($loggerSettings['name']);
+
+        $logger->pushProcessor(new UidProcessor());
+        $logger->pushHandler(
+            new StreamHandler($loggerSettings['path'], $loggerSettings['level'])
+        );
+
+        return $logger;
+    },
+
     // Middleware
     DownloadAuthMiddleware::class => function(ContainerInterface $container){
         /**
@@ -77,12 +92,15 @@ return [
          */
         $projectList = $container->get(ProjectList::class);
 
-        return new UploadAuthMiddleware($projectList->getActiveProject());
+        return new UploadAuthMiddleware(
+            $projectList->getActiveProject(),
+            $container->get(LoggerInterface::class)
+        );
     },
     ProjectMiddleware::class => function(ContainerInterface $container){
         return new ProjectMiddleware(
-            $container->get(ProjectList::class)
-
+            $container->get(ProjectList::class),
+            $container->get(LoggerInterface::class)
         );
     },
 

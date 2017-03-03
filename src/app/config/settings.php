@@ -8,8 +8,7 @@ return [
         // Monolog settings
         'logger' => [
             'name' => 'file-storage',
-            'path' => __DIR__ . 'php://stdout',
-            'level' => \Monolog\Logger::DEBUG,
+            'path' => 'php://stdout',
         ],
         'storage' => [
             'directory' => '/var/data/storage',

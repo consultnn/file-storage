@@ -5,5 +5,8 @@ declare(strict_types=1);
 return [
     'settings' => [
         'displayErrorDetails' => false,
+        'logger' => [
+            'level' => \Monolog\Logger::ERROR,
+        ],
     ],
 ];
