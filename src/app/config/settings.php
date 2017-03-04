@@ -9,6 +9,7 @@ return [
         'logger' => [
             'name' => 'file-storage',
             'path' => 'php://stdout',
+            'level' => \Monolog\Logger::DEBUG
         ],
         'storage' => [
             'directory' => '/var/data/storage',

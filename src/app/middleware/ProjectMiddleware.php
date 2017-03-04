@@ -19,10 +19,11 @@ use Psr\Log\LoggerInterface;
  */
 class ProjectMiddleware
 {
-    /**
-     * @var ProjectList
-     */
+    /** @var ProjectList */
     private $projectList;
+
+    /** @var LoggerInterface */
+    private $logger;
 
     /**
      * ProjectMiddleware constructor.
