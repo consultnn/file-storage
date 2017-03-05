@@ -7,16 +7,16 @@ namespace app\exceptions;
 use RuntimeException;
 
 /**
- * Class ProjectNotSetException
+ * Class TokenNotSetException
  * @package app\exceptions
  */
-class ProjectNotSetException extends RuntimeException
+class TokenNotSetException extends RuntimeException
 {
     /**
-     * ProjectNotSetException constructor.
+     * TokenNotSetException constructor.
      */
     public function __construct()
     {
-        parent::__construct('Project not set');
+        parent::__construct('Token not set');
     }
 }

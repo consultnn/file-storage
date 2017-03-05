@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+{
+    source vendor/common.sh # Для того, что бы IDE видела переменные
+    . "${BASH_SOURCE%/*}/vendor/common.sh"
+} 2>> /dev/null
+
+section "Init app"
+
+docker exec ${CONTAINER_PHP} cp -R /var/www/app/env/${ENV}/. /var/www/app/
+docker exec ${CONTAINER_PHP} mkdir -p /var/www/app/web/cache
+docker exec ${CONTAINER_PHP} chown -R www-data:www-data /var/data

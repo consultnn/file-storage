@@ -8,10 +8,12 @@ services:
       driver: "syslog"
       options:
         syslog-facility: "local0"
-        syslog-tag: "file-storage/nginx"
+        tag: "consultnn/file-storage/nginx"
     depends_on:
     - php
     restart: always
+    volumes:
+    - /var/data/file-storage/cache:/var/data/cache
   php:
     extends:
       file: common-compose.yml
@@ -20,7 +22,8 @@ services:
       driver: "syslog"
       options:
         syslog-facility: "local0"
-        syslog-tag: "file-storage/php"
+        tag: "consultnn/file-storage/php"
     restart: always
     volumes:
     - ./docker/php/prod/php.ini:/usr/local/etc/php/php.ini
+    - /var/data/file-storage/storage:/var/data/storage

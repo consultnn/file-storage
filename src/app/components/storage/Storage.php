@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace app\components\storage;
 
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 
 /**
@@ -12,30 +11,15 @@ use League\Flysystem\Filesystem;
  */
 class Storage
 {
-    /** @var  \League\Flysystem\Filesystem */
+    /** @var  Filesystem */
     private $filesystem;
 
-    private $config;
-
     /**
-     * @param array $config
+     * @param Filesystem $filesystem
      */
-    public function __construct(array $config)
+    public function __construct(Filesystem $filesystem)
     {
-        $this->config = $config;
-    }
-
-    /**
-     * @param array $config
-     */
-    public function configure(array $config)
-    {
-        $path = rtrim($this->config['directory'], '/') . DIRECTORY_SEPARATOR . ltrim($config['path'], '/');
-        if (!is_dir($path)) {
-            mkdir($path);
-        }
-        $adapter = new Local($path);
-        $this->filesystem = new Filesystem($adapter);
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -43,7 +27,7 @@ class Storage
      * @return File
      * @throws FileException
      */
-    public function save($uploadFilePath)
+    public function save($uploadFilePath): File
     {
         return (new File($this->filesystem))->upload($uploadFilePath);
     }
@@ -51,9 +35,15 @@ class Storage
     /**
      * @param $fileName
      * @return File
+     * @throws \app\components\storage\FileException
      */
-    public function getFileByName($fileName)
+    public function getFileByName($fileName): File
     {
         return (new File($this->filesystem))->load($fileName);
+    }
+
+    public function getFilesystem(): Filesystem
+    {
+        return $this->filesystem;
     }
 }

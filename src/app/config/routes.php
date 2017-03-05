@@ -2,22 +2,17 @@
 
 declare(strict_types=1);
 
-use app\actions\Download;
-use app\actions\Upload;
-use app\middleware\DownloadAuth;
-use app\middleware\UploadAuth;
+use app\actions\DownloadAction;
+use app\actions\UploadAction;
+use app\middleware\DownloadAuthMiddleware;
+use app\middleware\UploadAuthMiddleware;
 
 $container = $app->getContainer();
 
-$app->post('/upload/{project}/{token}', Upload::class)
-    ->add(new UploadAuth($container));
+$app->post('/upload', UploadAction::class )
+    ->add(UploadAuthMiddleware::class)
+;
 
-$app->group('/{file:\w+}_{hash:\w{1,7}}', function () {
-    /**
-     * @var \Slim\App $this
-     */
-    $this->get('.{extension:\w{3,4}}', Download::class);
-    $this->get('/{translit}.{extension:\w{3,4}}', Download::class);
-    $this->get('{params:_[\w\_-]+}.{extension:\w{3,4}}', Download::class);
-    $this->get('{params:_[\w\_-]+}/{translit}.{extension:\w{3,4}}', Download::class);
-})->add(new DownloadAuth($container));
+$app->get('/{file:\w+}.{extension:\w{3,4}}', DownloadAction::class)
+    ->add(DownloadAuthMiddleware::class)
+;

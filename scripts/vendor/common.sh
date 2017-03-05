@@ -19,7 +19,7 @@ do
     esac
 done
 
-readonly DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+readonly DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 
 if [ -z ${CONTAINER_PREFIX} ];
 then

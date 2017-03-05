@@ -1,4 +1,7 @@
 version: '2'
+volumes:
+  storage_files:
+  cache_files:
 services:
   nginx:
     extends:
@@ -11,4 +14,6 @@ services:
       file: common-compose.yml
       service: php
     volumes:
-    - ./docker/php/dev/php.ini:/usr/local/etc/php/php.ini
+    - ./docker/php/dev/php.ini:/usr/local/etc/php/php.ini:ro
+    - ./docker/php/dev/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+    - ./storage:/var/data/storage

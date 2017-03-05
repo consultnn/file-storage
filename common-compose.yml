@@ -3,8 +3,8 @@ services:
   nginx:
     image: nginx:1.10.1-alpine
     volumes:
-    - ./src:/www
-    - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    - ./src:/var/www
+    - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
     ports:
     - "8211:80"
     environment:
@@ -12,9 +12,8 @@ services:
   php:
     build: ./docker/php/build
     volumes:
-    - ./src:/www:rw
-    - ./docker/php/php-fpm.conf:/usr/local/etc/php-fpm.conf
-    - ./storage:/storage:rw
-    working_dir: /www/
+    - ./src:/var/www
+    - ./docker/php/php.ini:/usr/local/etc/php/php.ini:ro
+    working_dir: /var/www/
     environment:
     - ICU_DATA=/opt/icu/
