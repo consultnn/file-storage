@@ -129,7 +129,7 @@ return [
 
         // Set cache filesystem
         $cache = new League\Flysystem\Filesystem(
-            new League\Flysystem\Adapter\Local('/tmp/')
+            new \League\Flysystem\Memory\MemoryAdapter()
         );
 
         // Set image manager
