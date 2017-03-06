@@ -2,26 +2,14 @@
 
 namespace fiss\base;
 
-use fiss\Fiss;
-
 class Application
 {
 
-    private static $_instance;
+    private $_services;
 
-
-    public function __construct($config = [])
+    public function __construct($config)
     {
-        Fiss::$app = $this;
-        static::$_instance = $this;
-
-        Fiss::configure($this, $config);
-        $this->init();
-    }
-
-    public function init()
-    {
-
+        $this->registerServices($config['services']);
     }
 
     public function run()
@@ -29,4 +17,16 @@ class Application
         
     }
 
+    protected function registerServices($config)
+    {
+        foreach ($config as $serviceName => $serviceConfig) {
+            $constructorParameters = !empty($serviceConfig['constructor']) ? $serviceConfig['constructor'] : [];
+            $service = new $serviceConfig['class']( ...$constructorParameters);
+            foreach ($serviceConfig['options'] as $name => $option) {
+                $service->$name = $option;
+            }
+
+
+        }
+    }
 }
