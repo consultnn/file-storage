@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\components\storage;
 
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\Exception;
 use League\Flysystem\Filesystem;
 
@@ -23,12 +24,20 @@ class File
 
     private $extension;
 
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
 
     /**
      * @var FileNameMaker
      */
     private $fileNameMaker;
+
+    /**
+     * @var string
+     */
+    private $hash;
 
     /**
      * @param Filesystem $filesystem
@@ -53,6 +62,15 @@ class File
         }
 
         return $this;
+    }
+
+    public function getHash()
+    {
+        if ($point = strpos($this->name, '.')) {
+            return substr($this->name, 0, $point);
+        }
+
+        return $this->name;
     }
 
     /**
@@ -101,7 +119,7 @@ class File
             return $this->path;
         }
 
-        $name = $this->getName();
+        $name = $this->getHash();
         $directories = str_split(substr($name, 0, $this->directoryNameLength * $this->pathDeep), $this->pathDeep);
 
         return $this->path = implode(DIRECTORY_SEPARATOR, $directories) . DIRECTORY_SEPARATOR . $name;

@@ -32,7 +32,7 @@ class UploadAction
         $result = [];
 
         foreach ($files as $name => $file) {
-            $result[$file->file] = $this->storage->save($file->file)->getName();
+            $result[$file->file] = $this->storage->save($file->file)->getHash();
         }
 
         return $response->withJson($result, 200);
