@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\actions;
 
+use app\components\storage\FileException;
 use app\components\storage\Storage;
 use League\Glide\Server as GlideServer;
 use Psr\Http\Message\ResponseInterface;
@@ -44,8 +45,12 @@ class DownloadAction
         $path = $request->getUri()->getPath();
         $params = $request->getQueryParams();
 
-        $file = $this->storage->getFileByName(ltrim($path, '/'));
+        try {
+            $file = $this->storage->getFileByName(ltrim($path, '/'));
 
-        return $this->server->getImageResponse($file->getPath(), $params);
+            return $this->server->getImageResponse($file->getPath(), $params);
+        } catch (FileException $exception) {
+            return $response->withStatus(404);
+        }
     }
 }
